@@ -18,21 +18,17 @@ Folha a4 contendo
 Opções:
 1 e 3: precisa de login
 
-99737-0031
 
 
 Tema: Criar um website para cadastrar flashcards para uso em estudo.
 
-Resumo: Após o registro do usuário no site, ele irá poder fazer as seguintes ações:
-1) Criar um conjunto de flashcards sobre um determinado assunto para estudar.
- * O conjunto pode ser privado ou público.
-2) Fazer uma sessão de estudo com os flashcards.
- * Na sessão de estudo, ele irá poder marcar um flash card com um destaque, 
- * para revisão posterior.
-2) Olhar todos os conjuntos de flash cards de outros usuários para colocar 
-na sua biblioteca de estudo.
- * Caso ele se interesse por algum, ele pode copiar para ele o conjunto.
-Usuários não registrados podem apenas consultar conjuntos de flashcards públicos
+#User Stories
+1. Como usuário visitante eu quero me registrar para criar minha conta 
+2. Como usuário visitante eu quero visualizar uma lista de todos os flashcards que já foram cadastrados no sistema
+3. Como usuário visitante eu quero realizar uma sessão de estudo com um conjunto de flahscard criado por outra pessoa
+4. Como usuário registrado eu quero criar um conjunto de flashcards para estudo
+5. Como usuário registrado eu quero visualizar a lista de flashcards de outros usuários e colocar na minha lista de estudo
+6. Como usuário registrado eu quero visualizar a lista de flashcards que eu criei e que eu coloquei em minha lista para estudo
 
 Intergantes: 
 
