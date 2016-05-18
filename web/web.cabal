@@ -62,3 +62,4 @@ executable         web
                  , containers
                  , vector
                  , time
+                 , shakespeare

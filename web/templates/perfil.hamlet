@@ -1,0 +1,2 @@
+<p><b> Pagina de #{userNome user}
+<p><b> Login: #{userLogin user}
