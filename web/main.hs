@@ -125,8 +125,8 @@ postUsuarioR = do
 widgetLoginLogout = do
     mu <- lookupSession "_ID"
     return $ case mu of
-        Nothing ->  [hamlet|<a href="#login"><i class="fa fa-sign-in" aria-hidden="true"></i> Login|]
-        Just _ ->  [hamlet|<a href="#logout"><i class="fa fa-sign-in" aria-hidden="true"></i> Logout|]    
+        Nothing ->  [hamlet|<a href="@{LoginR}"><i class="fa fa-sign-in" aria-hidden="true"></i> Login|]
+        Just _ ->  [hamlet|<a href="@{LogoutR}"><i class="fa fa-sign-in" aria-hidden="true"></i> Logout|]    
 
 getHomeR :: Handler Html
 getHomeR = defaultLayout $ do
