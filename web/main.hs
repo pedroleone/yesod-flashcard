@@ -47,6 +47,7 @@ mkYesod "Pagina" [parseRoutes|
 /perfil/#UserId PerfilR GET
 /admin AdminR GET
 /logout LogoutR GET
+/cadastro CadastraUsuarioR GET POST
 |]
 
 instance Yesod Pagina where
@@ -55,6 +56,7 @@ instance Yesod Pagina where
     isAuthorized LoginR _ = return Authorized
     isAuthorized ErroR _ = return Authorized
     isAuthorized HomeR _ = return Authorized
+    isAuthorized CadastraUsuarioR _ = return Authorized
     isAuthorized UsuarioR _ = return Authorized
     isAuthorized AdminR _ = isAdmin
     isAuthorized _ _ = isUser
@@ -126,7 +128,7 @@ widgetLoginLogout = do
     mu <- lookupSession "_ID"
     return $ case mu of
         Nothing ->  [hamlet|<a href="@{LoginR}"><i class="fa fa-sign-in" aria-hidden="true"></i> Login|]
-        Just _ ->  [hamlet|<a href="@{LogoutR}"><i class="fa fa-sign-in" aria-hidden="true"></i> Logout|]    
+        Just _ ->  [hamlet|<a href="@{LogoutR}"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout|]    
 
 getHomeR :: Handler Html
 getHomeR = defaultLayout $ do
@@ -137,7 +139,7 @@ getHomeR = defaultLayout $ do
                 addStylesheetRemote "https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"    
                 addStylesheetRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
                 addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"
-                addScriptRemote "http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
+                addScriptRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
                 toWidgetHead
                     [hamlet|
                         <meta charset="UTF-8">  
@@ -156,11 +158,36 @@ getLoginR =  do
                 addStylesheetRemote "https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"    
                 addStylesheetRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
                 addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"
+                addScriptRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
+                toWidgetHead
+                    [hamlet|
+                        <meta charset="UTF-8">  
+                    |]
+
+
+getCadastraUsuarioR :: Handler Html
+getCadastraUsuarioR = do
+           (widget, enctype) <- generateFormPost formUser
+           defaultLayout $ do
+                wd <- widgetLoginLogout
+                toWidget $ $(luciusFile "templates/style.lucius")
+                $(whamletFile "templates/cadastro.hamlet")
+                addStylesheetRemote "https://fonts.googleapis.com/css?family=Bree+Serif"
+                addStylesheetRemote "https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"    
+                addStylesheetRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+                addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"
                 addScriptRemote "http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
                 toWidgetHead
                     [hamlet|
                         <meta charset="UTF-8">  
-                    |]             
+                    |]
+
+postCadastraUsuarioR :: Handler Html
+postCadastraUsuarioR = do
+           ((result, _), _) <- runFormPost formUser
+           case result of 
+               FormSuccess user -> (runDB $ insert user) >>= \piid -> redirect (PerfilR piid)
+               _ -> redirect ErroR
 
 --------------
                 

@@ -1,0 +1,4 @@
+$( document ).ready(function() {
+    $("form").addClass("form-horizontal")
+    // $("#hident2").addClass();
+});
