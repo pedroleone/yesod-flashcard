@@ -145,6 +145,22 @@ getHomeR = defaultLayout $ do
 
 
 
+getLoginR :: Handler Html
+getLoginR =  do 
+             (widget, enctype) <- generateFormPost formLogin
+             defaultLayout $ do
+                wd <- widgetLoginLogout
+                toWidget $ $(luciusFile "templates/style.lucius")
+                $(whamletFile "templates/login.hamlet")
+                addStylesheetRemote "https://fonts.googleapis.com/css?family=Bree+Serif"
+                addStylesheetRemote "https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"    
+                addStylesheetRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+                addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"
+                addScriptRemote "http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
+                toWidgetHead
+                    [hamlet|
+                        <meta charset="UTF-8">  
+                    |]             
 
 --------------
                 
@@ -153,25 +169,17 @@ getAdminR = defaultLayout [whamlet|
     <h1> Bem-vindo meu Rei!
 |]
 
-getLoginR :: Handler Html
-getLoginR = do
-           (widget, enctype) <- generateFormPost formLogin
-           defaultLayout [whamlet|
-                 <form method=post enctype=#{enctype} action=@{LoginR}>
-                     ^{widget}
-                     <input type="submit" value="Login">
-           |]
 
 postLoginR :: Handler Html
 postLoginR = do
            ((result, _), _) <- runFormPost formLogin
            case result of 
-               FormSuccess ("admin","admin") -> setSession "_ID" "admin" >> redirect AdminR
+               FormSuccess ("admin","admin") -> setSession "_ID" "admin" >> redirect HomeR
                FormSuccess (login,senha) -> do 
                    user <- runDB $ selectFirst [UserLogin ==. login, UserSenha ==. senha] []
                    case user of
                        Nothing -> redirect LoginR
-                       Just (Entity pid u) -> setSession "_ID" (pack $ show $ fromSqlKey pid) >> redirect (PerfilR pid)
+                       Just (Entity pid u) -> setSession "_ID" (pack $ show $ fromSqlKey pid) >> redirect (HomeR) --(PerfilR uid)
 
 getErroR :: Handler Html
 getErroR = defaultLayout [whamlet|
@@ -181,9 +189,7 @@ getErroR = defaultLayout [whamlet|
 getLogoutR :: Handler Html
 getLogoutR = do
      deleteSession "_ID"
-     defaultLayout [whamlet| 
-         <h1> ADEUS!
-     |]
+     redirect (HomeR)
 
 ---------------------------
 
