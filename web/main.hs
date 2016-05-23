@@ -103,12 +103,23 @@ getUsuarioR = do
                      <input type="submit" value="Enviar">
            |]
 
+widgetEstilos = do
+    addStylesheetRemote "https://fonts.googleapis.com/css?family=Bree+Serif"
+    addStylesheetRemote "https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"    
+    addStylesheetRemote "http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+    addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"
+    addScriptRemote "http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
+    
+
 getPerfilR :: UserId -> Handler Html
 getPerfilR uid = do
       user <- runDB $ get404 uid
-      defaultLayout $ do
-          toWidget $ $(luciusFile "templates/perfil.lucius")
-          $(whamletFile "templates/perfil.hamlet")
+      defaultLayout [whamlet|
+          <p><b> Pagina de #{userNome user}
+          <p><b> Login: #{userLogin user}
+      |]
+          
+
 
 postUsuarioR :: Handler Html
 postUsuarioR = do
@@ -117,9 +128,28 @@ postUsuarioR = do
                FormSuccess user -> (runDB $ insert user) >>= \piid -> redirect (PerfilR piid)
                _ -> redirect ErroR
 
-getHomeR :: Handler Html
-getHomeR = defaultLayout [whamlet|Hello World!|]
+--------------------
 
+
+getHomeR :: Handler Html
+getHomeR = defaultLayout $ do
+                toWidget $ $(luciusFile "templates/style.lucius")
+                $(whamletFile "templates/index.hamlet")
+                addStylesheetRemote "https://fonts.googleapis.com/css?family=Bree+Serif"
+                addStylesheetRemote "https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"    
+                addStylesheetRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+                addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"
+                addScriptRemote "http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
+                toWidgetHead
+                    [hamlet|
+                        <meta charset="UTF-8">  
+                    |]                
+
+
+
+
+--------------
+                
 getAdminR :: Handler Html
 getAdminR = defaultLayout [whamlet|
     <h1> Bem-vindo meu Rei!
