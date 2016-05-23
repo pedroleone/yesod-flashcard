@@ -63,3 +63,4 @@ executable         web
                  , vector
                  , time
                  , shakespeare
+                 , blaze-html

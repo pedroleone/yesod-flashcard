@@ -8,6 +8,7 @@ import Data.Text
 import Text.Lucius
 import Text.Julius
 import Control.Monad.Logger (runStdoutLoggingT)
+import Text.Blaze.Html.Renderer.String (renderHtml)
 
 data Pagina = Pagina{connPool :: ConnectionPool}
 
@@ -103,14 +104,6 @@ getUsuarioR = do
                      <input type="submit" value="Enviar">
            |]
 
-widgetEstilos = do
-    addStylesheetRemote "https://fonts.googleapis.com/css?family=Bree+Serif"
-    addStylesheetRemote "https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"    
-    addStylesheetRemote "http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
-    addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"
-    addScriptRemote "http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
-    
-
 getPerfilR :: UserId -> Handler Html
 getPerfilR uid = do
       user <- runDB $ get404 uid
@@ -129,10 +122,15 @@ postUsuarioR = do
                _ -> redirect ErroR
 
 --------------------
-
+widgetLoginLogout = do
+    mu <- lookupSession "_ID"
+    return $ case mu of
+        Nothing ->  [hamlet|<a href="#login"><i class="fa fa-sign-in" aria-hidden="true"></i> Login|]
+        Just _ ->  [hamlet|<a href="#logout"><i class="fa fa-sign-in" aria-hidden="true"></i> Logout|]    
 
 getHomeR :: Handler Html
 getHomeR = defaultLayout $ do
+                wd <- widgetLoginLogout
                 toWidget $ $(luciusFile "templates/style.lucius")
                 $(whamletFile "templates/index.hamlet")
                 addStylesheetRemote "https://fonts.googleapis.com/css?family=Bree+Serif"
