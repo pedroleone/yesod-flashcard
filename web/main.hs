@@ -22,6 +22,7 @@ User json
 FlashCard json
     nome Text
     descricao Text
+    ownerid UserId
     deriving Show
     
 FlashCardDetail json
@@ -179,7 +180,7 @@ getCadastraUsuarioR = do
                 addStylesheetRemote "https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"    
                 addStylesheetRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
                 addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"
-                addScriptRemote "http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
+                addScriptRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
                 toWidgetHead
                     [hamlet|
                         <meta charset="UTF-8">  
@@ -210,7 +211,7 @@ getMeusFlashCardsR = do
         addStylesheetRemote "https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"    
         addStylesheetRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
         addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"
-        addScriptRemote "http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
+        addScriptRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
         addStylesheetRemote "https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css"
         addScriptRemote "https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"
         addScriptRemote "https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"
@@ -220,7 +221,7 @@ getMeusFlashCardsR = do
             |]
         toWidget[julius|
             $(document).ready(function() {
-                $('#flashcard').DataTable({
+                $('table').DataTable({
                 "language": { "url": "https://cdn.datatables.net/plug-ins/1.10.11/i18n/Portuguese-Brasil.json" }
                 });
             } );            
@@ -236,7 +237,7 @@ getListaFlashcardsR = do
         addStylesheetRemote "https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"    
         addStylesheetRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
         addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"
-        addScriptRemote "http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
+        addScriptRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
         addStylesheetRemote "https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css"
         addScriptRemote "https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"
         addScriptRemote "https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"
@@ -246,11 +247,17 @@ getListaFlashcardsR = do
             |]
         toWidget[julius|
             $(document).ready(function() {
-                $('#flashcard').DataTable({
+                $('table').DataTable({
                 "language": { "url": "https://cdn.datatables.net/plug-ins/1.10.11/i18n/Portuguese-Brasil.json" }
                 });
+
             } );            
-        |]            
+        |]
+        toWidgetHead [lucius|
+        div.dataTables_wrapper {
+                margin-bottom: 3em;
+            }        
+        |]
 
 --------------
                 

@@ -13,7 +13,7 @@
           <li>^{wd}
     <div class="col-sm-9">
         <h1>Meus Flashcards
-        <p>Você possui os seguintes flashcards cadastrados no sistema. Clique em <i class="fa fa-book" aria-hidden="true"></i> para estudar qualquer um deles.
+        <p>Você possui os seguintes flashcards cadastrados no sistema. Clique em <i class="fa fa-book" aria-hidden="true"></i> para estudar qualquer um deles. Clique em <i class="fa fa-plus" aria-hidden="true"></i> para adicionar novos cartões dentro de cada assunto.
         <p><a href="#" class="btn btn-default">Criar novo flashcard</a>
         <table id="flashcard" class="table table-striped table-bordered" cellspacing="0" width="100%">
           <thead>
@@ -33,10 +33,40 @@
               <td>1
               <td>Sintaxe Haskell
               <td>Estudo da sintaxe do haskell
-              <td><a href="#" class="btn btn-default"><i class="fa fa-book" aria-hidden="true"></i> </a>
+              <td><a href="#" class="btn btn-default"><i class="fa fa-book" aria-hidden="true"></i> </a> <a href="#" class="btn btn-default"><i class="fa fa-plus" aria-hidden="true"></i> </a>
             <tr>
               <td>2
               <td>Empreendedorismo
               <td>Material estudo P2
+              <td><a href="#" class="btn btn-default"><i class="fa fa-book" aria-hidden="true"></i> </a> <a href="#" class="btn btn-default"><i class="fa fa-plus" aria-hidden="true"></i> </a>
+        <h2>Flashcards Favoritos
+        <p>A lista abaixo mostra todos os flashcards que você colocou como favorito
+        <table id="flashcard-favoritos" class="table table-striped table-bordered" cellspacing="0" width="100%">
+          <thead>
+            <tr>
+              <th>Código
+              <th>Nome
+              <th>Descrição
+              <th>Ação
+          <tfoot>
+            <tr>
+              <th>Código
+              <th>Nome
+              <th>Descrição
+              <th>Ação
+          <tbody>
+            <tr>
+              <td>3
+              <td>Inglês
+              <td>Verbos irregulares
               <td><a href="#" class="btn btn-default"><i class="fa fa-book" aria-hidden="true"></i> </a>
-        
+            <tr>
+              <td>4
+              <td>Gestão de Projeto
+              <td>Conceitos PMBOK
+              <td><a href="#" class="btn btn-default"><i class="fa fa-book" aria-hidden="true"></i> </a>
+            <tr>
+              <td>5
+              <td>ITIL
+              <td>Questões do simulado ITIL
+              <td><a href="#" class="btn btn-default"><i class="fa fa-book" aria-hidden="true"></i> </a>              
