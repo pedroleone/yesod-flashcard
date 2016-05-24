@@ -48,6 +48,8 @@ mkYesod "Pagina" [parseRoutes|
 /admin AdminR GET
 /logout LogoutR GET
 /cadastro CadastraUsuarioR GET POST
+/flashcard MeusFlashCardsR GET
+/lista ListaFlashcardsR GET
 |]
 
 instance Yesod Pagina where
@@ -57,6 +59,7 @@ instance Yesod Pagina where
     isAuthorized ErroR _ = return Authorized
     isAuthorized HomeR _ = return Authorized
     isAuthorized CadastraUsuarioR _ = return Authorized
+    isAuthorized ListaFlashcardsR _ = return Authorized
     isAuthorized UsuarioR _ = return Authorized
     isAuthorized AdminR _ = isAdmin
     isAuthorized _ _ = isUser
@@ -127,8 +130,8 @@ postUsuarioR = do
 widgetLoginLogout = do
     mu <- lookupSession "_ID"
     return $ case mu of
-        Nothing ->  [hamlet|<a href="@{LoginR}"><i class="fa fa-sign-in" aria-hidden="true"></i> Login|]
-        Just _ ->  [hamlet|<a href="@{LogoutR}"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout|]    
+        Nothing ->  [hamlet|<a href="@{LoginR}"><i class="fa fa-sign-in fa-fw" aria-hidden="true"></i> Login|]
+        Just _ ->  [hamlet|<a href="@{LogoutR}"><i class="fa fa-sign-out fa-fw" aria-hidden="true"></i> Logout|]    
 
 getHomeR :: Handler Html
 getHomeR = defaultLayout $ do
@@ -181,6 +184,7 @@ getCadastraUsuarioR = do
                     [hamlet|
                         <meta charset="UTF-8">  
                     |]
+                    
 
 postCadastraUsuarioR :: Handler Html
 postCadastraUsuarioR = do
@@ -188,6 +192,65 @@ postCadastraUsuarioR = do
            case result of 
                FormSuccess user -> (runDB $ insert user) >>= \piid -> redirect (PerfilR piid)
                _ -> redirect ErroR
+
+
+
+getMeusFlashCardsR :: Handler Html
+getMeusFlashCardsR = do
+      -- logica: buscar o ID do usuario que esta logado (rota deve ser AuthenticationRequired)
+      -- depois de obter o ID, fazer uma query com join na UserFlashCard + 
+      
+      -- mu <- lookupSession "_ID"
+      -- fcs <- runDB $ selectList [UserFlashCardUserid .= show $ mu] [] 
+      defaultLayout $ do
+        wd <- widgetLoginLogout
+        toWidget $ $(luciusFile "templates/style.lucius")
+        $(whamletFile "templates/meusfc.hamlet")
+        addStylesheetRemote "https://fonts.googleapis.com/css?family=Bree+Serif"
+        addStylesheetRemote "https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"    
+        addStylesheetRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+        addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"
+        addScriptRemote "http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
+        addStylesheetRemote "https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css"
+        addScriptRemote "https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"
+        addScriptRemote "https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"
+        toWidgetHead
+            [hamlet|
+                <meta charset="UTF-8">  
+            |]
+        toWidget[julius|
+            $(document).ready(function() {
+                $('#flashcard').DataTable({
+                "language": { "url": "https://cdn.datatables.net/plug-ins/1.10.11/i18n/Portuguese-Brasil.json" }
+                });
+            } );            
+        |]
+
+
+getListaFlashcardsR = do
+      defaultLayout $ do
+        wd <- widgetLoginLogout
+        toWidget $ $(luciusFile "templates/style.lucius")
+        $(whamletFile "templates/listafc.hamlet")
+        addStylesheetRemote "https://fonts.googleapis.com/css?family=Bree+Serif"
+        addStylesheetRemote "https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"    
+        addStylesheetRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+        addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"
+        addScriptRemote "http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
+        addStylesheetRemote "https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css"
+        addScriptRemote "https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"
+        addScriptRemote "https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"
+        toWidgetHead
+            [hamlet|
+                <meta charset="UTF-8">  
+            |]
+        toWidget[julius|
+            $(document).ready(function() {
+                $('#flashcard').DataTable({
+                "language": { "url": "https://cdn.datatables.net/plug-ins/1.10.11/i18n/Portuguese-Brasil.json" }
+                });
+            } );            
+        |]            
 
 --------------
                 
