@@ -9,6 +9,7 @@ import Text.Lucius
 import Text.Julius
 import Control.Monad.Logger (runStdoutLoggingT)
 import Text.Blaze.Html.Renderer.String (renderHtml)
+import Yesod.Form.Bootstrap3
 
 data Pagina = Pagina{connPool :: ConnectionPool}
 
@@ -113,9 +114,10 @@ formFlashCard = renderDivs $ (,) <$>
                            fsAttrs=[("maxlength","100")]} Nothing
 
 formFlashCardDetail :: Form (Textarea, Textarea)
-formFlashCardDetail = renderDivs $ (,) <$>
-            areq textareaField "Frente" Nothing <*>
-            areq textareaField "Verso" Nothing 
+formFlashCardDetail = renderBootstrap3 BootstrapBasicForm $ (,) <$>
+            areq textareaField (bfs ("Frente" :: Text)) Nothing <*>
+            areq textareaField (bfs ("Verso" :: Text)) Nothing 
+            
 
 getCriaFlashCardR :: Handler Html
 getCriaFlashCardR = do
@@ -333,20 +335,7 @@ getAdicionarCardR fid = do
 
 
 postAdicionarCardR :: FlashCardId -> Handler Html
-postAdicionarCardR fid = defaultLayout $ do
-                wd <- widgetLoginLogout
-                toWidget $ $(luciusFile "templates/style.lucius")
-                $(whamletFile "templates/index.hamlet")
-                addStylesheetRemote "https://fonts.googleapis.com/css?family=Bree+Serif"
-                addStylesheetRemote "https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"    
-                addStylesheetRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
-                addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"
-                addScriptRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
-                toWidgetHead
-                    [hamlet|
-                        <meta charset="UTF-8">  
-                    |]                
-      
+postAdicionarCardR fid = redirect HomeR
 
 --------------
                 
