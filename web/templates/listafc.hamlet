@@ -28,18 +28,9 @@
               <th>Descrição
               <th>Ação
           <tbody>
-            <tr>
-              <td>1
-              <td>Sintaxe Haskell
-              <td>Estudo da sintaxe do haskell
-              <td><a href="#" class="btn btn-default"><i class="fa fa-book" aria-hidden="true"></i> </a> <a href="#" class="btn btn-default"><i class="fa fa-star" aria-hidden="true"></i> </a>
-            <tr>
-              <td>2
-              <td>Empreendedorismo
-              <td>Material estudo P2
-              <td><a href="#" class="btn btn-default"><i class="fa fa-book" aria-hidden="true"></i> </a> <a href="#" class="btn btn-default"><i class="fa fa-star" aria-hidden="true"></i> </a>
-            <tr>
-              <td>3
-              <td>Inglês
-              <td>Verbos irregulares
-              <td><a href="#" class="btn btn-default"><i class="fa fa-book" aria-hidden="true"></i> </a> <a href="#" class="btn btn-default"><i class="fa fa-star" aria-hidden="true"></i> </a>
+            $forall Entity fid flashcard <- fcs
+              <tr>
+                <td>#{pack $ show $ fromSqlKey fid}
+                <td>#{flashCardNome flashcard}
+                <td>#{flashCardDescricao flashcard}
+                <td><a href="#" class="btn btn-default"><i class="fa fa-book" aria-hidden="true"></i> </a> <a href="#" class="btn btn-default"><i class="fa fa-star" aria-hidden="true"></i> </a>

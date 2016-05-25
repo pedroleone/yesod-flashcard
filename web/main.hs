@@ -27,8 +27,8 @@ FlashCard json
     
 FlashCardDetail json
     cardid FlashCardId
-    frente Text
-    verso Text
+    frente Textarea
+    verso Textarea
     comentario Text
     deriving Show
 
@@ -51,6 +51,8 @@ mkYesod "Pagina" [parseRoutes|
 /cadastro CadastraUsuarioR GET POST
 /flashcard MeusFlashCardsR GET
 /lista ListaFlashcardsR GET
+/flashcard/novo CriaFlashCardR GET POST
+/flashcard/add/#FlashCardId AdicionarCardR GET POST
 |]
 
 instance Yesod Pagina where
@@ -101,6 +103,56 @@ formLogin = renderDivs $ (,) <$>
            areq textField "Login: " Nothing <*>
            areq passwordField "Senha: " Nothing
 
+formFlashCard :: Form (Text, Text)
+formFlashCard = renderDivs $ (,) <$>
+            areq textField "Nome do Conjunto: " Nothing <*>
+            areq textField FieldSettings{fsId=Just "hident2",
+                           fsLabel="Descrição",
+                           fsTooltip= Nothing,
+                           fsName= Nothing,
+                           fsAttrs=[("maxlength","100")]} Nothing
+
+formFlashCardDetail :: Form (Textarea, Textarea)
+formFlashCardDetail = renderDivs $ (,) <$>
+            areq textareaField "Frente" Nothing <*>
+            areq textareaField "Verso" Nothing 
+
+getCriaFlashCardR :: Handler Html
+getCriaFlashCardR = do
+                (widget, enctype) <- generateFormPost formFlashCard
+                defaultLayout $ do
+                    wd <- widgetLoginLogout
+                    toWidget $ $(luciusFile "templates/style.lucius")
+                    $(whamletFile "templates/criafc.hamlet")
+                    addStylesheetRemote "https://fonts.googleapis.com/css?family=Bree+Serif"
+                    addStylesheetRemote "https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"    
+                    addStylesheetRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+                    addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"
+                    addScriptRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
+                    toWidgetHead
+                        [hamlet|
+                            <meta charset="UTF-8">  
+                        |]                
+                    
+
+postCriaFlashCardR :: Handler Html
+postCriaFlashCardR = do
+                      mu <- lookupSession "_ID"
+                      case mu of 
+                        Nothing -> redirect LoginR
+                        Just uid -> do 
+                            ((result, _), _) <- runFormPost formLogin
+                            case result of 
+                                FormSuccess (nome,descricao) -> do 
+                                    user <- runDB $ selectFirst [UserId ==. (toSqlKey $ read $ unpack $ uid)] []
+                                    case user of
+                                        Nothing -> redirect LoginR
+                                        Just (Entity pid u) -> do 
+                                                runDB $ insert $ FlashCard nome descricao pid
+                                                redirect MeusFlashCardsR
+
+
+
 getUsuarioR :: Handler Html
 getUsuarioR = do
            (widget, enctype) <- generateFormPost formUser
@@ -128,11 +180,9 @@ postUsuarioR = do
                _ -> redirect ErroR
 
 --------------------
-widgetLoginLogout = do
-    mu <- lookupSession "_ID"
-    return $ case mu of
-        Nothing ->  [hamlet|<a href="@{LoginR}"><i class="fa fa-sign-in fa-fw" aria-hidden="true"></i> Login|]
-        Just _ ->  [hamlet|<a href="@{LogoutR}"><i class="fa fa-sign-out fa-fw" aria-hidden="true"></i> Logout|]    
+
+
+
 
 getHomeR :: Handler Html
 getHomeR = defaultLayout $ do
@@ -201,34 +251,39 @@ getMeusFlashCardsR = do
       -- logica: buscar o ID do usuario que esta logado (rota deve ser AuthenticationRequired)
       -- depois de obter o ID, fazer uma query com join na UserFlashCard + 
       
-      -- mu <- lookupSession "_ID"
-      -- fcs <- runDB $ selectList [UserFlashCardUserid .= show $ mu] [] 
-      defaultLayout $ do
-        wd <- widgetLoginLogout
-        toWidget $ $(luciusFile "templates/style.lucius")
-        $(whamletFile "templates/meusfc.hamlet")
-        addStylesheetRemote "https://fonts.googleapis.com/css?family=Bree+Serif"
-        addStylesheetRemote "https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"    
-        addStylesheetRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
-        addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"
-        addScriptRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
-        addStylesheetRemote "https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css"
-        addScriptRemote "https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"
-        addScriptRemote "https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"
-        toWidgetHead
-            [hamlet|
-                <meta charset="UTF-8">  
-            |]
-        toWidget[julius|
-            $(document).ready(function() {
-                $('table').DataTable({
-                "language": { "url": "https://cdn.datatables.net/plug-ins/1.10.11/i18n/Portuguese-Brasil.json" }
-                });
-            } );            
-        |]
+      mu <- lookupSession "_ID"
+      case mu of 
+        Nothing -> redirect LoginR
+        Just uid -> do
+                        fcs <- runDB $ selectList [FlashCardOwnerid ==. (toSqlKey $ read $ unpack $ uid)] [] 
+                        favfcs <- runDB $ (rawSql (pack $ "SELECT ??, ?? FROM flash_card INNER JOIN user_flash_card ON flash_card.id = user_flash_card.cardid WHERE user_flash_card.userid = " ++ (unpack $ uid)) []) :: Handler [(Entity FlashCard, Entity UserFlashCard)]
+                        defaultLayout $ do
+                        wd <- widgetLoginLogout
+                        toWidget $ $(luciusFile "templates/style.lucius")
+                        $(whamletFile "templates/meusfc.hamlet")
+                        addStylesheetRemote "https://fonts.googleapis.com/css?family=Bree+Serif"
+                        addStylesheetRemote "https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"    
+                        addStylesheetRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+                        addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"
+                        addScriptRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
+                        addStylesheetRemote "https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css"
+                        addScriptRemote "https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"
+                        addScriptRemote "https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"
+                        toWidgetHead
+                            [hamlet|
+                                <meta charset="UTF-8">  
+                            |]
+                        toWidget[julius|
+                            $(document).ready(function() {
+                                $('table').DataTable({
+                                "language": { "url": "https://cdn.datatables.net/plug-ins/1.10.11/i18n/Portuguese-Brasil.json" }
+                            });
+                        } );            
+                    |]
 
 
 getListaFlashcardsR = do
+      fcs <- runDB $ selectList [] [Asc FlashCardNome]
       defaultLayout $ do
         wd <- widgetLoginLogout
         toWidget $ $(luciusFile "templates/style.lucius")
@@ -259,6 +314,40 @@ getListaFlashcardsR = do
             }        
         |]
 
+getAdicionarCardR :: FlashCardId -> Handler Html
+getAdicionarCardR fid = do
+            (widget, enctype) <- generateFormPost formFlashCardDetail
+            defaultLayout $ do
+                wd <- widgetLoginLogout
+                toWidget $ $(luciusFile "templates/style.lucius")
+                $(whamletFile "templates/criacards.hamlet")
+                addStylesheetRemote "https://fonts.googleapis.com/css?family=Bree+Serif"
+                addStylesheetRemote "https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"    
+                addStylesheetRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+                addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"
+                addScriptRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
+                toWidgetHead
+                    [hamlet|
+                        <meta charset="UTF-8">  
+                    |]                
+
+
+postAdicionarCardR :: FlashCardId -> Handler Html
+postAdicionarCardR fid = defaultLayout $ do
+                wd <- widgetLoginLogout
+                toWidget $ $(luciusFile "templates/style.lucius")
+                $(whamletFile "templates/index.hamlet")
+                addStylesheetRemote "https://fonts.googleapis.com/css?family=Bree+Serif"
+                addStylesheetRemote "https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"    
+                addStylesheetRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+                addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"
+                addScriptRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
+                toWidgetHead
+                    [hamlet|
+                        <meta charset="UTF-8">  
+                    |]                
+      
+
 --------------
                 
 getAdminR :: Handler Html
@@ -271,7 +360,7 @@ postLoginR :: Handler Html
 postLoginR = do
            ((result, _), _) <- runFormPost formLogin
            case result of 
-               FormSuccess ("admin","admin") -> setSession "_ID" "admin" >> redirect HomeR
+               FormSuccess ("admin","admin") -> setSession "_ID" "0" >> redirect HomeR
                FormSuccess (login,senha) -> do 
                    user <- runDB $ selectFirst [UserLogin ==. login, UserSenha ==. senha] []
                    case user of
@@ -288,6 +377,12 @@ getLogoutR = do
      deleteSession "_ID"
      redirect (HomeR)
 
+widgetLoginLogout = do
+    mu <- lookupSession "_ID"
+    return $ case mu of
+        Nothing ->  [hamlet|<a href="@{LoginR}"><i class="fa fa-sign-in fa-fw" aria-hidden="true"></i> Login|]
+        Just _ ->  [hamlet|<a href="@{LogoutR}"><i class="fa fa-sign-out fa-fw" aria-hidden="true"></i> Logout|]    
+
 ---------------------------
 
 connStr = "dbname=dd9en8l5q4hh2a host=ec2-107-21-219-201.compute-1.amazonaws.com user=kpuwtbqndoeyqb password=aCROh525uugAWF1l7kahlNN3E0 port=5432"
@@ -296,3 +391,4 @@ main::IO()
 main = runStdoutLoggingT $ withPostgresqlPool connStr 10 $ \pool -> liftIO $ do 
        runSqlPersistMPool (runMigration migrateAll) pool
        warp 8080 (Pagina pool)
+
