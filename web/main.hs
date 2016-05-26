@@ -54,6 +54,7 @@ mkYesod "Pagina" [parseRoutes|
 /flashcard/novo CriaFlashCardR GET POST
 /flashcard/add/#FlashCardId AdicionarCardR GET POST
 /flashcard/estudo/#FlashCardId EstudaR GET 
+/flashcard/favoritar/#FlashCardId FavoritaR GET
 /faq FaqR GET
 |]
 
@@ -374,6 +375,22 @@ getFaqR = defaultLayout $ do
                     [hamlet|
                         <meta charset="UTF-8">  
                     |]    
+
+getFavoritaR :: FlashCardId -> Handler Html
+getFavoritaR fid = do
+                mu <- lookupSession "_ID"
+                case mu of
+                    Nothing -> redirect LoginR
+                    Just uid -> do
+                        favfc <- runDB $ selectFirst [UserFlashCardUserid ==. (toSqlKey $ read $ unpack $ uid), UserFlashCardCardid ==. fid] []
+                        case favfc of
+                            Nothing -> do 
+                                runDB $ insert $ UserFlashCard (toSqlKey $ read $ unpack $ uid) fid
+                                redirect MeusFlashCardsR
+                            Just (Entity key fav) -> do 
+                                runDB $ delete $ key
+                                redirect MeusFlashCardsR
+
 --------------
                 
 getAdminR :: Handler Html
@@ -415,7 +432,7 @@ widgetMenu = do
                     <li><a href="@{FaqR}"> <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i> FAQ</a>
                     <li><a href="@{LoginR}"><i class="fa fa-sign-in fa-fw" aria-hidden="true"></i> Login</a>
                     |]
-        Just _ ->  [hamlet|
+        Just _ -> [hamlet|
             <nav id="column_left">
                 <ul class="nav nav-list">
                     <li><a href="@{HomeR}"><i class="fa fa-home fa-fw" aria-hidden="true"></i> Home</a>
@@ -423,7 +440,7 @@ widgetMenu = do
                     <li><a href="@{ListaFlashcardsR}"> <i class="fa fa-search fa-fw" aria-hidden="true"></i> Procurar Flashcards</a>
                     <li><a href="@{FaqR}"> <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i> FAQ</a>
                     <li><a href="@{LogoutR}"><i class="fa fa-sign-out fa-fw" aria-hidden="true"></i> Logout</a>
-                    |]    
+                    |]
 
 
 ---------------------------
