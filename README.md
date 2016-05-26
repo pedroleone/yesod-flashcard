@@ -31,5 +31,8 @@ Tema: Criar um website para cadastrar flashcards para uso em estudo.
 6. Como usuário registrado eu quero visualizar a lista de flashcards que eu criei e que eu coloquei em minha lista para estudo
 
 Intergantes: 
+* Pedro Luiz
+* Marcus Vinicius
+* Gabriel Cesar
 
 Escolha: Item 3 - Website com hamlet, julius e cassius/lucius.
