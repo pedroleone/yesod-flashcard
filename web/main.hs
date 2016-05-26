@@ -430,7 +430,10 @@ getAdminR = do
 getApagaflashR :: FlashCardId -> Handler Html
 getApagaflashR fid = do
                         runDB $ deleteCascade fid
-                        redirect AdminR
+                        mu <- lookupSession "_ID"
+                        if mu == (Just "0")
+                            then redirect AdminR
+                            else redirect MeusFlashCardsR
 
 getApagacardR :: FlashCardDetailId -> Handler Html
 getApagacardR cid = do
