@@ -19,3 +19,4 @@
                         <div class="card__back">
                             <div class="card__text">
                                 <p>#{flashCardDetailVerso flashcarddetail}
+            <p class="text-center">Card nº <strong>#{show $ fromSqlKey fcid}</strong>
