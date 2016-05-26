@@ -120,7 +120,7 @@ getCriaFlashCardR :: Handler Html
 getCriaFlashCardR = do
                 (widget, enctype) <- generateFormPost formFlashCard
                 defaultLayout $ do
-                    wd <- widgetLoginLogout
+                    menu <- widgetMenu
                     toWidget $ $(luciusFile "templates/style.lucius")
                     $(whamletFile "templates/criafc.hamlet")
                     addStylesheetRemote "https://fonts.googleapis.com/css?family=Bree+Serif"
@@ -204,7 +204,7 @@ getLoginR :: Handler Html
 getLoginR =  do 
              (widget, enctype) <- generateFormPost formLogin
              defaultLayout $ do
-                wd <- widgetLoginLogout
+                menu <- widgetMenu
                 toWidget $ $(luciusFile "templates/style.lucius")
                 $(whamletFile "templates/login.hamlet")
                 addStylesheetRemote "https://fonts.googleapis.com/css?family=Bree+Serif"
@@ -222,7 +222,7 @@ getCadastraUsuarioR :: Handler Html
 getCadastraUsuarioR = do
            (widget, enctype) <- generateFormPost formUser
            defaultLayout $ do
-                wd <- widgetLoginLogout
+                menu <- widgetMenu
                 toWidget $ $(luciusFile "templates/style.lucius")
                 $(whamletFile "templates/cadastro.hamlet")
                 addStylesheetRemote "https://fonts.googleapis.com/css?family=Bree+Serif"
@@ -254,7 +254,7 @@ getMeusFlashCardsR = do
                         fcs <- runDB $ selectList [FlashCardOwnerid ==. (toSqlKey $ read $ unpack $ uid)] [] 
                         favfcs <- runDB $ (rawSql (pack $ "SELECT ??, ?? FROM flash_card INNER JOIN user_flash_card ON flash_card.id = user_flash_card.cardid WHERE user_flash_card.userid = " ++ (unpack $ uid)) []) :: Handler [(Entity FlashCard, Entity UserFlashCard)]
                         defaultLayout $ do
-                        wd <- widgetLoginLogout
+                        menu <- widgetMenu
                         toWidget $ $(luciusFile "templates/style.lucius")
                         $(whamletFile "templates/meusfc.hamlet")
                         addStylesheetRemote "https://fonts.googleapis.com/css?family=Bree+Serif"
@@ -281,7 +281,7 @@ getMeusFlashCardsR = do
 getListaFlashcardsR = do
       fcs <- runDB $ selectList [] [Asc FlashCardNome]
       defaultLayout $ do
-        wd <- widgetLoginLogout
+        menu <- widgetMenu
         toWidget $ $(luciusFile "templates/style.lucius")
         $(whamletFile "templates/listafc.hamlet")
         addStylesheetRemote "https://fonts.googleapis.com/css?family=Bree+Serif"
@@ -314,7 +314,7 @@ getAdicionarCardR :: FlashCardId -> Handler Html
 getAdicionarCardR fid = do
             (widget, enctype) <- generateFormPost formFlashCardDetail
             defaultLayout $ do
-                wd <- widgetLoginLogout
+                menu <- widgetMenu
                 toWidget $ $(luciusFile "templates/style.lucius")
                 $(whamletFile "templates/criacards.hamlet")
                 addStylesheetRemote "https://fonts.googleapis.com/css?family=Bree+Serif"
@@ -342,7 +342,7 @@ getEstudaR fid = do
       fc <- runDB $ get404 fid
       user <- runDB $ get404 (flashCardOwnerid fc)
       defaultLayout $ do
-        wd <- widgetLoginLogout
+        menu <- widgetMenu
         toWidget $ $(luciusFile "templates/style.lucius")
         $(whamletFile "templates/estudo.hamlet")
         addStylesheetRemote "https://fonts.googleapis.com/css?family=Bree+Serif"
@@ -358,7 +358,7 @@ getEstudaR fid = do
 
 getFaqR :: Handler Html
 getFaqR = defaultLayout $ do
-                wd <- widgetLoginLogout
+                menu <- widgetMenu
                 toWidget $ $(luciusFile "templates/style.lucius")
                 $(whamletFile "templates/faq.hamlet")
                 addStylesheetRemote "https://fonts.googleapis.com/css?family=Bree+Serif"
@@ -398,12 +398,6 @@ getLogoutR :: Handler Html
 getLogoutR = do
      deleteSession "_ID"
      redirect (HomeR)
-
-widgetLoginLogout = do
-    mu <- lookupSession "_ID"
-    return $ case mu of
-        Nothing ->  [hamlet|<a href="@{LoginR}"><i class="fa fa-sign-in fa-fw" aria-hidden="true"></i> Login|]
-        Just _ ->  [hamlet|<a href="@{LogoutR}"><i class="fa fa-sign-out fa-fw" aria-hidden="true"></i> Logout|]    
 
 widgetMenu = do
     mu <- lookupSession "_ID"

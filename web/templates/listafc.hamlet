@@ -4,13 +4,7 @@
 
   <div class="row">
     <div class="col-sm-3">
-      <nav id="column_left">
-        <ul class="nav nav-list">
-          <li><a href="@{HomeR}"><i class="fa fa-home fa-fw" aria-hidden="true"></i> Home</a>
-          <li><a href="@{MeusFlashCardsR}"><i class="fa fa-file-o fa-fw" aria-hidden="true"></i> Meus Flashcards</a>
-          <li><a href="@{ListaFlashcardsR}"> <i class="fa fa-search fa-fw" aria-hidden="true"></i> Procurar Flashcards</a>
-          <li><a href="#"> <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i> FAQ</a>
-          <li>^{wd}
+      ^{menu}
     <div class="col-sm-9">
         <h1>Lista Flashcards
         <p>Veja a lista de todos os flashcards existentes no sistema. Clique em <i class="fa fa-book" aria-hidden="true"></i> para estudar qualquer um deles, ou em <i class="fa fa-star-o" aria-hidden="true"></i> para adicionar a sua coleção pessoal (precisa estar logado).

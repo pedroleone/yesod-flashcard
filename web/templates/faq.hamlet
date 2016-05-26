@@ -4,13 +4,7 @@
 
   <div class="row">
     <div class="col-sm-3">
-      <nav id="column_left">
-        <ul class="nav nav-list">
-          <li><a href="@{HomeR}"><i class="fa fa-home fa-fw" aria-hidden="true"></i> Home</a>
-          <li><a href="@{MeusFlashCardsR}"><i class="fa fa-file-o fa-fw" aria-hidden="true"></i> Meus Flashcards</a>
-          <li><a href="@{ListaFlashcardsR}"> <i class="fa fa-search fa-fw" aria-hidden="true"></i> Procurar Flashcards</a>
-          <li><a href="@{FaqR}"> <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i> FAQ</a>
-          <li>^{wd}
+      ^{menu}
     <div class="col-sm-9">
       <h2>Como utilizar Flashcards para melhorar a aprendizagem?
       <p>Um Flashcard não é nada demais se você não usá-lo corretamente. Existe um grande motivo pelo qual eles têm sido usados como kit de ferramentas para estudantes por tanto tempo e é por causa da sua habilidade de produzir resultados. Aqui estão algum dos motivos que fazem os Flashcards serem uma ótima ferramenta de estudo:
