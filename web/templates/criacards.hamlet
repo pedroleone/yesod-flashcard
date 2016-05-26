@@ -12,8 +12,8 @@
           <li><a href="#"> <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i> FAQ</a>
           <li>^{wd}
     <div class="col-sm-9">
-        <h1>Cria Conjunto de Flash Cards
-        <p>Digite os dados abaixo para criar o seu novo conjunto de flash card
-        <form method=post enctype=#{enctype} action=@{CriaFlashCardR}>
+        <h1>Cria Flash Cards
+        <p>Digite os dados abaixo para criar o seu novo card
+        <form method=post enctype=#{enctype} action="@{AdicionarCardR fid}">
             ^{widget}
             <input type="submit" value="Enviar">        

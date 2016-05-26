@@ -18,5 +18,5 @@
         <div .col-sm-6 .col-sm-offset-3>
           <form method=post enctype=#{enctype} action=@{LoginR} class="form-horizontal">
             ^{widget}
-          <input type="submit" value="Login" class="btn btn-default">
+            <input type="submit" value="Login" class="btn btn-default">
         

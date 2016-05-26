@@ -53,7 +53,7 @@ mkYesod "Pagina" [parseRoutes|
 /lista ListaFlashcardsR GET
 /flashcard/novo CriaFlashCardR GET POST
 /flashcard/add/#FlashCardId AdicionarCardR GET POST
-/flashcard/estudo/#FlashCardId EstudaR GET
+/flashcard/estudo/#FlashCardId EstudaR GET 
 |]
 
 instance Yesod Pagina where
@@ -113,7 +113,7 @@ formFlashCardDetail :: Form (Textarea, Textarea)
 formFlashCardDetail = renderBootstrap3 BootstrapBasicForm $ (,) <$>
             areq textareaField (bfs ("Frente" :: Text)) Nothing <*>
             areq textareaField (bfs ("Verso" :: Text)) Nothing 
-            
+
 
 getCriaFlashCardR :: Handler Html
 getCriaFlashCardR = do
@@ -326,14 +326,13 @@ getAdicionarCardR fid = do
                         <meta charset="UTF-8">  
                     |]                
 
-
 postAdicionarCardR :: FlashCardId -> Handler Html
 postAdicionarCardR fid = do
-                            ((result, _), _) <- runFormPost formFlashCardDetail
-                            case result of
-                                FormSuccess (frente,verso) -> do
-                                    runDB $ insert $ FlashCardDetail fid frente verso 
-                                    redirect MeusFlashCardsR
+                    ((result, _), _) <- runFormPost formFlashCardDetail
+                    case result of
+                        FormSuccess (frente,verso) -> do
+                            runDB $ insert $ FlashCardDetail fid frente verso 
+                            redirect MeusFlashCardsR
 
 
 getEstudaR :: FlashCardId -> Handler Html
@@ -385,12 +384,12 @@ getLogoutR = do
 widgetLoginLogout = do
     mu <- lookupSession "_ID"
     return $ case mu of
-        Nothing ->  [hamlet|<a href="@{LoginR}"><i .fa .fa-sign-in .fa-fw aria-hidden="true"></i> Login|]
-        Just _ ->  [hamlet|<a href="@{LogoutR}"><i .fa .fa-sign-out .fa-fw aria-hidden="true"></i> Logout|]    
+        Nothing ->  [hamlet|<a href="@{LoginR}"><i class="fa fa-sign-in fa-fw" aria-hidden="true"></i> Login|]
+        Just _ ->  [hamlet|<a href="@{LogoutR}"><i class="fa fa-sign-out fa-fw" aria-hidden="true"></i> Logout|]    
 
 ---------------------------
 
-connStr = "dbname=dd9en8l5q4hh2a host=ec2-107-21-219-201.compute-1.amazonaws.com user=kpuwtbqndoeyqb password=aCROh525uugAWF1l7kahlNN3E0 port=5432"
+connStr = "dbname=dcq1g11l0nlarg host=ec2-54-243-202-110.compute-1.amazonaws.com user=ghagzcmagsinsp password=dhCA-0uFwZx4qXgqiwSOnKiZNB port=5432"
 
 main::IO()
 main = runStdoutLoggingT $ withPostgresqlPool connStr 10 $ \pool -> liftIO $ do 
