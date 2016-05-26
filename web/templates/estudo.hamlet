@@ -8,7 +8,7 @@
     <div class="col-sm-9">
         <h2>Estudo - #{flashCardNome fc}
         <p>Assunto: #{flashCardDescricao fc}
-        <p>Criado por #{userNome user}
+        <p>Criador: #{userNome user}
         $forall Entity fcid flashcarddetail <- cards
             <div class="row">
                 <div class="col-sm-8 col-sm-offset-2">
