@@ -59,7 +59,6 @@ mkYesod "Pagina" [parseRoutes|
 
 instance Yesod Pagina where
     authRoute _ = Just LoginR
-    
     isAuthorized LoginR _ = return Authorized
     isAuthorized ErroR _ = return Authorized
     isAuthorized HomeR _ = return Authorized
@@ -67,7 +66,12 @@ instance Yesod Pagina where
     isAuthorized ListaFlashcardsR _ = return Authorized
     isAuthorized UsuarioR _ = return Authorized
     isAuthorized AdminR _ = isAdmin
+    isAuthorized (EstudaR _) _ = return Authorized
     isAuthorized _ _ = isUser
+    
+
+    
+    
 
 isUser = do
     mu <- lookupSession "_ID"
@@ -79,7 +83,7 @@ isAdmin = do
     mu <- lookupSession "_ID"
     return $ case mu of
         Nothing -> AuthenticationRequired
-        Just "admin" -> Authorized 
+        Just "0" -> Authorized 
         Just _ -> Unauthorized "Voce precisa ser admin para entrar aqui"
 
 instance YesodPersist Pagina where
