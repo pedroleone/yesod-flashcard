@@ -30,7 +30,6 @@ FlashCardDetail json
     cardid FlashCardId
     frente Textarea
     verso Textarea
-    comentario Text
     deriving Show
 
 UserFlashCard json
@@ -94,24 +93,20 @@ instance RenderMessage Pagina FormMessage where
     renderMessage _ _ = defaultFormMessage
 
 formUser :: Form User
-formUser = renderDivs $ User <$>
-           areq textField "Nome: " Nothing <*>
-           areq textField "Login: " Nothing <*>
-           areq passwordField "Senha: " Nothing
+formUser = renderBootstrap3 BootstrapBasicForm $ User <$>
+           areq textField (bfs ("Nome" :: Text)) Nothing <*>
+           areq textField (bfs ("Login" :: Text)) Nothing <*>
+           areq passwordField (bfs ("Senha" :: Text)) Nothing
 
 formLogin :: Form (Text,Text)
-formLogin = renderDivs $ (,) <$>
-           areq textField "Login: " Nothing <*>
-           areq passwordField "Senha: " Nothing
+formLogin = renderBootstrap3 BootstrapBasicForm $ (,) <$>
+           areq textField (bfs ("Login" :: Text)) Nothing <*>
+           areq passwordField (bfs ("Senha" :: Text)) Nothing
 
 formFlashCard :: Form (Text, Text)
-formFlashCard = renderDivs $ (,) <$>
-            areq textField "Nome do Conjunto: " Nothing <*>
-            areq textField FieldSettings{fsId=Just "hident2",
-                           fsLabel="Descrição",
-                           fsTooltip= Nothing,
-                           fsName= Nothing,
-                           fsAttrs=[("maxlength","100")]} Nothing
+formFlashCard = renderBootstrap3 BootstrapBasicForm $ (,) <$>
+            areq textField (bfs ("Nome do Conjunto" :: Text)) Nothing <*>
+            areq textField (bfs ("Descrição" :: Text)) Nothing
 
 formFlashCardDetail :: Form (Textarea, Textarea)
 formFlashCardDetail = renderBootstrap3 BootstrapBasicForm $ (,) <$>
@@ -250,9 +245,6 @@ postCadastraUsuarioR = do
 
 getMeusFlashCardsR :: Handler Html
 getMeusFlashCardsR = do
-      -- logica: buscar o ID do usuario que esta logado (rota deve ser AuthenticationRequired)
-      -- depois de obter o ID, fazer uma query com join na UserFlashCard + 
-      
       mu <- lookupSession "_ID"
       case mu of 
         Nothing -> redirect LoginR
@@ -335,8 +327,12 @@ getAdicionarCardR fid = do
 
 
 postAdicionarCardR :: FlashCardId -> Handler Html
-postAdicionarCardR fid = redirect HomeR
-
+postAdicionarCardR fid = do
+                            ((result, _), _) <- runFormPost formFlashCardDetail
+                            case result of
+                                FormSuccess (frente,verso) -> do
+                                    runDB $ insert $ FlashCardDetail fid frente verso 
+                                    redirect MeusFlashCardsR
 --------------
                 
 getAdminR :: Handler Html

@@ -14,8 +14,9 @@
     <div class="col-sm-9">
       <div class="well">
         <p>Não possui login? <a href="@{CadastraUsuarioR}" class="btn btn-default">Clique aqui para criar</a>
-      <form method=post enctype=#{enctype} action=@{LoginR} class="form-horizontal">
-        <div class="form-group">
-          ^{widget}
+      <div .row>
+        <div .col-sm-6 .col-sm-offset-3>
+          <form method=post enctype=#{enctype} action=@{LoginR} class="form-horizontal">
+            ^{widget}
           <input type="submit" value="Login" class="btn btn-default">
         

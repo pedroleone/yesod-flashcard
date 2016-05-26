@@ -16,4 +16,4 @@
         <p>Digite os dados abaixo para criar o seu novo conjunto de flash card
         <form method=post enctype=#{enctype} action=@{CriaFlashCardR}>
             ^{widget}
-            <input type="submit" value="Enviar">        
+            <input type="submit" value="Enviar" .btn .btn-default>        
