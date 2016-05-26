@@ -385,8 +385,8 @@ getLogoutR = do
 widgetLoginLogout = do
     mu <- lookupSession "_ID"
     return $ case mu of
-        Nothing ->  [hamlet|<a href="@{LoginR}"><i class="fa fa-sign-in fa-fw" aria-hidden="true"></i> Login|]
-        Just _ ->  [hamlet|<a href="@{LogoutR}"><i class="fa fa-sign-out fa-fw" aria-hidden="true"></i> Logout|]    
+        Nothing ->  [hamlet|<a href="@{LoginR}"><i .fa .fa-sign-in .fa-fw aria-hidden="true"></i> Login|]
+        Just _ ->  [hamlet|<a href="@{LogoutR}"><i .fa .fa-sign-out .fa-fw aria-hidden="true"></i> Logout|]    
 
 ---------------------------
 
@@ -394,6 +394,6 @@ connStr = "dbname=dd9en8l5q4hh2a host=ec2-107-21-219-201.compute-1.amazonaws.com
 
 main::IO()
 main = runStdoutLoggingT $ withPostgresqlPool connStr 10 $ \pool -> liftIO $ do 
-       runSqlPersistMPool (runMigration migrateAll) pool
+       runSqlPersistMPool (runMigrationUnsafe migrateAll) pool
        warp 8080 (Pagina pool)
 
