@@ -13,7 +13,7 @@ import Yesod.Form.Bootstrap3
 
 data Pagina = Pagina{connPool :: ConnectionPool}
 
-share [mkPersist sqlSettings, mkMigrate "migrateAll"] [persistLowerCase|
+share [mkPersist sqlSettings, mkDeleteCascade sqlSettings, mkMigrate "migrateAll"] [persistLowerCase|
 User json
     nome Text
     login Text
@@ -56,7 +56,12 @@ mkYesod "Pagina" [parseRoutes|
 /flashcard/estudo/#FlashCardId EstudaR GET 
 /flashcard/favoritar/#FlashCardId FavoritaR GET
 /faq FaqR GET
+/admin/deletar/#FlashCardId ApagaflashR GET 
+/admin/deletar/card/#FlashCardDetailId ApagacardR GET
+
 |]
+
+
 
 instance Yesod Pagina where
     authRoute _ = Just LoginR
@@ -181,7 +186,7 @@ postUsuarioR = do
            ((result, _), _) <- runFormPost formUser
            case result of 
                FormSuccess user -> (runDB $ insert user) >>= \piid -> redirect (PerfilR piid)
-               _ -> redirect ErroR
+               _ -> redirect LoginR
 
 --------------------
 
@@ -422,6 +427,17 @@ getAdminR = do
             |]
 
 
+getApagaflashR :: FlashCardId -> Handler Html
+getApagaflashR fid = do
+                        runDB $ deleteCascade fid
+                        redirect AdminR
+
+getApagacardR :: FlashCardDetailId -> Handler Html
+getApagacardR cid = do
+                        runDB $ delete cid
+                        redirect AdminR
+
+
 postLoginR :: Handler Html
 postLoginR = do
            ((result, _), _) <- runFormPost formLogin
@@ -463,6 +479,7 @@ widgetMenu = do
                     <li><a href="@{ListaFlashcardsR}"> <i class="fa fa-search fa-fw" aria-hidden="true"></i> Procurar Flashcards</a>
                     <li><a href="@{FaqR}"> <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i> FAQ</a>
                     <li><a href="@{LogoutR}"><i class="fa fa-sign-out fa-fw" aria-hidden="true"></i> Logout</a>
+                    <li><a href="@{AdminR}"><i class="fa fa-lock fa-fw" aria-hidden="true"></i> Administração</a>
                     |]
 
 
