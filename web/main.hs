@@ -394,9 +394,32 @@ getFavoritaR fid = do
 --------------
                 
 getAdminR :: Handler Html
-getAdminR = defaultLayout [whamlet|
-    <h1> Bem-vindo meu Rei!
-|]
+getAdminR = do       
+        fcs <- runDB $ selectList [] [Asc FlashCardNome] 
+        cards <- runDB $ selectList [] [Asc FlashCardDetailCardid]
+        defaultLayout $ do
+            menu <- widgetMenu
+            toWidget $ $(luciusFile "templates/style.lucius")
+            $(whamletFile "templates/admin.hamlet")
+            addStylesheetRemote "https://fonts.googleapis.com/css?family=Bree+Serif"
+            addStylesheetRemote "https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"    
+            addStylesheetRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+            addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"
+            addScriptRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
+            addStylesheetRemote "https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css"
+            addScriptRemote "https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"
+            addScriptRemote "https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"
+            toWidgetHead
+                [hamlet|
+                    <meta charset="UTF-8">  
+                |]
+            toWidget[julius|
+                $(document).ready(function() {
+                    $('table').DataTable({
+                    "language": { "url": "https://cdn.datatables.net/plug-ins/1.10.11/i18n/Portuguese-Brasil.json" }
+                    });
+                } );            
+            |]
 
 
 postLoginR :: Handler Html
