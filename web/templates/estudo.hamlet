@@ -9,14 +9,15 @@
           <li><a href="@{HomeR}"><i class="fa fa-home fa-fw" aria-hidden="true"></i> Home</a>
           <li><a href="@{MeusFlashCardsR}"><i class="fa fa-file-o fa-fw" aria-hidden="true"></i> Meus Flashcards</a>
           <li><a href="@{ListaFlashcardsR}"> <i class="fa fa-search fa-fw" aria-hidden="true"></i> Procurar Flashcards</a>
-          <li><a href="#"> <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i> FAQ</a>
+          <li><a href="@{FaqR}"> <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i> FAQ</a>
           <li>^{wd}
     <div class="col-sm-9">
-        <h2>Estudo
-        <p>Blablabla
+        <h2>Estudo - #{flashCardNome fc}
+        <p>#{flashCardDescricao fc}
+        <p>Criado por #{userNome user}
         $forall Entity fcid flashcarddetail <- cards
             <div class="row">
-                <div class="col-sm-8 col-sm-offset-2">        
+                <div class="col-sm-8 col-sm-offset-2">
                     <div class="card effect__hover">
                         <div class="card__front">
                             <div class="card__text">

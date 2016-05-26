@@ -4,16 +4,10 @@
 
   <div class="row">
     <div class="col-sm-3">
-      <nav id="column_left">
-        <ul class="nav nav-list">
-          <li><a href="@{HomeR}"><i class="fa fa-home fa-fw" aria-hidden="true"></i> Home</a>
-          <li><a href="@{MeusFlashCardsR}"><i class="fa fa-file-o fa-fw" aria-hidden="true"></i> Meus Flashcards</a>
-          <li><a href="@{ListaFlashcardsR}"> <i class="fa fa-search fa-fw" aria-hidden="true"></i> Procurar Flashcards</a>
-          <li><a href="#"> <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i> FAQ</a>
-          <li>^{wd}
+      ^{menu}
     <div class="col-sm-9">
       <h2>Você sabe o que são flash cards?
-      <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. Donec non enim in turpis pulvinar facilisis. Ut felis. Praesent dapibus, neque id cursus faucibus, tortor neque egestas augue, eu vulputate magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus
+      <p>Flashcards foram inventados para superar aquele velho problema que todo mundo parece ter: nunca ter tempo suficiente. Flashcards são uma das ferramentas de aprendizagem mais rápidas que você pode usar. Eles permitem rever rapidamente informações e testar seus conhecimentos. Usar flashcards para ganhar conhecimento é baseado em teorias psicológicas, testes e pesquisas.
   
       <div class="row">
         <div class="col-sm-8 col-sm-offset-2">        

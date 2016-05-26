@@ -54,6 +54,7 @@ mkYesod "Pagina" [parseRoutes|
 /flashcard/novo CriaFlashCardR GET POST
 /flashcard/add/#FlashCardId AdicionarCardR GET POST
 /flashcard/estudo/#FlashCardId EstudaR GET 
+/faq FaqR GET
 |]
 
 instance Yesod Pagina where
@@ -184,7 +185,7 @@ postUsuarioR = do
 
 getHomeR :: Handler Html
 getHomeR = defaultLayout $ do
-                wd <- widgetLoginLogout
+                menu <- widgetMenu
                 toWidget $ $(luciusFile "templates/style.lucius")
                 $(whamletFile "templates/index.hamlet")
                 addStylesheetRemote "https://fonts.googleapis.com/css?family=Bree+Serif"
@@ -338,6 +339,8 @@ postAdicionarCardR fid = do
 getEstudaR :: FlashCardId -> Handler Html
 getEstudaR fid = do
       cards <- runDB $ selectList [FlashCardDetailCardid ==. fid] []
+      fc <- runDB $ get404 fid
+      user <- runDB $ get404 (flashCardOwnerid fc)
       defaultLayout $ do
         wd <- widgetLoginLogout
         toWidget $ $(luciusFile "templates/style.lucius")
@@ -352,6 +355,21 @@ getEstudaR fid = do
                 <meta charset="UTF-8">  
             |]
 
+
+getFaqR :: Handler Html
+getFaqR = defaultLayout $ do
+                wd <- widgetLoginLogout
+                toWidget $ $(luciusFile "templates/style.lucius")
+                $(whamletFile "templates/faq.hamlet")
+                addStylesheetRemote "https://fonts.googleapis.com/css?family=Bree+Serif"
+                addStylesheetRemote "https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"    
+                addStylesheetRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+                addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"
+                addScriptRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
+                toWidgetHead
+                    [hamlet|
+                        <meta charset="UTF-8">  
+                    |]    
 --------------
                 
 getAdminR :: Handler Html
@@ -386,6 +404,29 @@ widgetLoginLogout = do
     return $ case mu of
         Nothing ->  [hamlet|<a href="@{LoginR}"><i class="fa fa-sign-in fa-fw" aria-hidden="true"></i> Login|]
         Just _ ->  [hamlet|<a href="@{LogoutR}"><i class="fa fa-sign-out fa-fw" aria-hidden="true"></i> Logout|]    
+
+widgetMenu = do
+    mu <- lookupSession "_ID"
+    return $ case mu of
+        Nothing ->  [hamlet|
+            <nav id="column_left">
+                <ul class="nav nav-list">
+                    <li><a href="@{HomeR}"><i class="fa fa-home fa-fw" aria-hidden="true"></i> Home</a>
+                    <li><a href="@{MeusFlashCardsR}"><i class="fa fa-file-o fa-fw" aria-hidden="true"></i> Meus Flashcards</a>
+                    <li><a href="@{ListaFlashcardsR}"> <i class="fa fa-search fa-fw" aria-hidden="true"></i> Procurar Flashcards</a>
+                    <li><a href="@{FaqR}"> <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i> FAQ</a>
+                    <li><a href="@{LoginR}"><i class="fa fa-sign-in fa-fw" aria-hidden="true"></i> Login</a>
+                    |]
+        Just _ ->  [hamlet|
+            <nav id="column_left">
+                <ul class="nav nav-list">
+                    <li><a href="@{HomeR}"><i class="fa fa-home fa-fw" aria-hidden="true"></i> Home</a>
+                    <li><a href="@{MeusFlashCardsR}"><i class="fa fa-file-o fa-fw" aria-hidden="true"></i> Meus Flashcards</a>
+                    <li><a href="@{ListaFlashcardsR}"> <i class="fa fa-search fa-fw" aria-hidden="true"></i> Procurar Flashcards</a>
+                    <li><a href="@{FaqR}"> <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i> FAQ</a>
+                    <li><a href="@{LogoutR}"><i class="fa fa-sign-out fa-fw" aria-hidden="true"></i> Logout</a>
+                    |]    
+
 
 ---------------------------
 

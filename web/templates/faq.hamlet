@@ -1,0 +1,33 @@
+<div class="container white-bg" style="padding-bottom: 30px">  
+  <div class="page-header">
+    <h1 class="title"><i class="fa fa-book" aria-hidden="true"></i> Haskell FlashCard
+
+  <div class="row">
+    <div class="col-sm-3">
+      <nav id="column_left">
+        <ul class="nav nav-list">
+          <li><a href="@{HomeR}"><i class="fa fa-home fa-fw" aria-hidden="true"></i> Home</a>
+          <li><a href="@{MeusFlashCardsR}"><i class="fa fa-file-o fa-fw" aria-hidden="true"></i> Meus Flashcards</a>
+          <li><a href="@{ListaFlashcardsR}"> <i class="fa fa-search fa-fw" aria-hidden="true"></i> Procurar Flashcards</a>
+          <li><a href="@{FaqR}"> <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i> FAQ</a>
+          <li>^{wd}
+    <div class="col-sm-9">
+      <h2>Como utilizar Flashcards para melhorar a aprendizagem?
+      <p>Um Flashcard não é nada demais se você não usá-lo corretamente. Existe um grande motivo pelo qual eles têm sido usados como kit de ferramentas para estudantes por tanto tempo e é por causa da sua habilidade de produzir resultados. Aqui estão algum dos motivos que fazem os Flashcards serem uma ótima ferramenta de estudo:
+      <h3>1- Envolvem a recordação ativa
+      <p>Flashcards enviam informações para o cérebro envolvendo a recordação ativa. Quando um estudante pratica com um Flashcard, ele tem uma pista sobre a informação no lado da frente do flashcard e o seu cérebro acaba se forçando a lembrar o restante da informação no lado de trás. Cada vez que o estudante pratica esse processo significa que ele está forçando o seu cérebro a lembrar da informação. Isso faz com que flashcards sejam um ótimo método de memorização.
+      <h3>2- Ajuda na repetição espaçada
+      <p>	Se você não está familiarizado com a ideia de repetição espaçada, ela basicamente envolve o estudo entre espaços de tempo, ao invés de estudar massivamente tudo de uma só vez. Por exemplo, se um estudante revê um assunto um dia depois de aprende-lo, a próxima vez que ele rever este tópico deverá ser depois de dois dias, depois três, e assim vai. Um estudo de psicologia realizado com estudantes da Universidade da Califórnia revelou que este tipo de repetição espaçada usando flashcards é uma técnica mais eficiente de estudar do que simplesmente praticar intensamente antes de um exame. Cerca de 90% dos participantes desse estudo se saíram melhor nas provas usando este método.
+      <h3>3- Ativa funções metacognitivas
+      <p>	Você já acreditou em algo firmemente como sendo verdade e depois se surpreendeu ao descobrir que estava errado? Muito provavelmente você vai ter lembrado a resposta certa mais claramente. Devido a surpresa em descobrir a resposta correta, ela acaba se enraizando na sua memória e aumentando o aprendizado. Esse tipo de auto-reflexão é conhecido como metacognição. Cada vez que o estudante gira um Flashcard, ele está internamente se perguntando <em>"o que isso tem a ver com a resposta?"</em>, o que acaba envolvendo suas funções metacognitivas. Em resumo, as respostas corretas nos flashcards são codificadas em conhecimento a ser recuperado quando for necessário.
+      <h3>4- Método de auto teste
+      <p>	A maioria dos professores que se preze sempre dizem que a prática leva a perfeição. Flashcards são uma ótima maneira de facilitar a prática para exames, simplesmente por estar lembrando fatos importantes, vocabulários ou definições. Usar esta ferramenta de flashcard proverá uma maneira efetiva para estudantes se auto testarem.
+      <h3>5- Melhora a retenção de conhecimento
+      <p>	Reter conhecimento a longo prazo é importante. Os estudantes poderiam simplesmente estudar massivamente uma noite antes de seus exames mas isso tende a não funcionar direito. Autores de relatórios sobre técnicas de aprendizagem efetiva destacam que a retenção de conhecimento está intimamente ligada ao auto teste. Os autores desta pesquisa explicam que a prática aumenta o processo de recuperação de informação do cérebro, melhorando nossa habilidade de reter e organizar informações. Sendo assim, usar flashcards para estudar cria uma reação em cadeia; auto teste melhora continuamente a capacidade de lembrar informações que ajuda a reter o conhecimento a longo prazo.
+      <h3>6- Melhora habilidades de compreensão
+      <p>	Flashcards, particularmente os que contém imagens, ajudam estudantes a entender novas palavras, definições e fatos, o que acaba construindo habilidades de compreensão. Por este motivo, o uso de flashcards está relacionado ao aprendizado de novos idiomas com 93% dos professores afirmando que o uso de flashcards de fato ajuda os estudantes a aprenderem novas línguas. É natural que flashcard seja uma poderosa ferramenta para jovens estudantes pois a melhora nas habilidades de compreensão resulta em uma leitura mais rápida.
+      <h3>7- Permite Aprendizagem visual
+      <p>	Nunca subestime o poder da comunicação visual, principalmente na área da educação. Recentemente, cientistas descobriram que leva apenas 13 milissegundos para vermos uma imagem. Evidentemente, leva-se mais tempo do que isso para compreender o conteúdo da imagem, mas se você estiver procurando por uma forma de rápida aprendizagem - aqui está ela! Por sorte, vivemos em uma era onde a tecnologia nos permite integrar de maneira fácil imagens em flashcards online.
+      <h3>8- Notas melhores nas provas
+      <p>Em última análise, o resultado da melhora na aprendizagem é a melhora das notas nos exames. Se as razões acima não convenceram da eficiência dos flashcards, talvez isso ajude: Os autores dos estudos envolvendo aprendizagem eficiente testaram o uso de flashcards em um curso de Introdução à Psicologia e descobriram que os estudantes que haviam estudado via flashcards tiveram, em geral, uma nota significantemente maior do que outros estudantes. 
+  
