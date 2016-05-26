@@ -7,7 +7,7 @@
       ^{menu}
     <div class="col-sm-9">
       <div class="well">
-        <p>Não possui login? <a href="@{CadastraUsuarioR}" class="btn btn-default">Clique aqui para criar</a>
+        <p>Não possui login? <a href="@{CadastraUsuarioR}" class="btn btn-primary btn-lg">Clique aqui para criar</a>
       <div .row>
         <div .col-sm-6 .col-sm-offset-3>
           <form method=post enctype=#{enctype} action=@{LoginR} class="form-horizontal">
