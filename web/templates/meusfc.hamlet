@@ -34,7 +34,7 @@
                 <td>#{pack $ show $ fromSqlKey fid}
                 <td>#{flashCardNome flashcard}
                 <td>#{flashCardDescricao flashcard}
-                <td><a href="#" class="btn btn-default"><i class="fa fa-book" aria-hidden="true"></i> </a> <a href="#" class="btn btn-default"><i class="fa fa-plus" aria-hidden="true"></i> </a>
+                <td><a href="@{EstudaR fid}" class="btn btn-default"><i class="fa fa-book" aria-hidden="true"></i> </a> <a href="@{AdicionarCardR fid}" class="btn btn-default"><i class="fa fa-plus" aria-hidden="true"></i> </a>
               
             
         <h2>Flashcards Favoritos

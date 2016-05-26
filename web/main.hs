@@ -53,6 +53,7 @@ mkYesod "Pagina" [parseRoutes|
 /lista ListaFlashcardsR GET
 /flashcard/novo CriaFlashCardR GET POST
 /flashcard/add/#FlashCardId AdicionarCardR GET POST
+/flashcard/estudo/#FlashCardId EstudaR GET
 |]
 
 instance Yesod Pagina where
@@ -333,6 +334,25 @@ postAdicionarCardR fid = do
                                 FormSuccess (frente,verso) -> do
                                     runDB $ insert $ FlashCardDetail fid frente verso 
                                     redirect MeusFlashCardsR
+
+
+getEstudaR :: FlashCardId -> Handler Html
+getEstudaR fid = do
+      cards <- runDB $ selectList [FlashCardDetailCardid ==. fid] []
+      defaultLayout $ do
+        wd <- widgetLoginLogout
+        toWidget $ $(luciusFile "templates/style.lucius")
+        $(whamletFile "templates/estudo.hamlet")
+        addStylesheetRemote "https://fonts.googleapis.com/css?family=Bree+Serif"
+        addStylesheetRemote "https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"    
+        addStylesheetRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+        addScriptRemote "https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"
+        addScriptRemote "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
+        toWidgetHead
+            [hamlet|
+                <meta charset="UTF-8">  
+            |]
+
 --------------
                 
 getAdminR :: Handler Html
