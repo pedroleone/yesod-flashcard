@@ -150,7 +150,7 @@ postCriaFlashCardR = do
                       case mu of 
                         Nothing -> redirect LoginR
                         Just uid -> do 
-                            ((result, _), _) <- runFormPost formLogin
+                            ((result, _), _) <- runFormPost formFlashCard
                             case result of 
                                 FormSuccess (nome,descricao) -> do 
                                     user <- runDB $ selectFirst [UserId ==. (toSqlKey $ read $ unpack $ uid)] []
