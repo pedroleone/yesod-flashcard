@@ -153,12 +153,8 @@ postCriaFlashCardR = do
                             ((result, _), _) <- runFormPost formFlashCard
                             case result of 
                                 FormSuccess (nome,descricao) -> do 
-                                    user <- runDB $ selectFirst [UserId ==. (toSqlKey $ read $ unpack $ uid)] []
-                                    case user of
-                                        Nothing -> redirect LoginR
-                                        Just (Entity pid u) -> do 
-                                                runDB $ insert $ FlashCard nome descricao pid
-                                                redirect MeusFlashCardsR
+                                    runDB $ insert $ FlashCard nome descricao (toSqlKey $ read $ unpack $ uid)
+                                    redirect MeusFlashCardsR
 
 
 
