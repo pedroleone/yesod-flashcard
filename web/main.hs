@@ -45,7 +45,6 @@ mkYesod "Pagina" [parseRoutes|
 /login LoginR GET POST
 /erro ErroR GET
 /usuario UsuarioR GET POST
-/perfil/#UserId PerfilR GET
 /admin AdminR GET
 /logout LogoutR GET
 /cadastro CadastraUsuarioR GET POST
@@ -172,21 +171,12 @@ getUsuarioR = do
                      <input type="submit" value="Enviar">
            |]
 
-getPerfilR :: UserId -> Handler Html
-getPerfilR uid = do
-      user <- runDB $ get404 uid
-      defaultLayout [whamlet|
-          <p><b> Pagina de #{userNome user}
-          <p><b> Login: #{userLogin user}
-      |]
-          
-
 
 postUsuarioR :: Handler Html
 postUsuarioR = do
            ((result, _), _) <- runFormPost formUser
            case result of 
-               FormSuccess user -> (runDB $ insert user) >>= \piid -> redirect (PerfilR piid)
+               FormSuccess user -> (runDB $ insert user) >>= \piid -> redirect (MeusFlashCardsR)
                _ -> redirect LoginR
 
 --------------------
@@ -251,7 +241,7 @@ postCadastraUsuarioR :: Handler Html
 postCadastraUsuarioR = do
            ((result, _), _) <- runFormPost formUser
            case result of 
-               FormSuccess user -> (runDB $ insert user) >>= \piid -> redirect (PerfilR piid)
+               FormSuccess user -> (runDB $ insert user) >>= \piid -> redirect (MeusFlashCardsR)
                _ -> redirect ErroR
 
 
