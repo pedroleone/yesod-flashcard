@@ -44,7 +44,6 @@ mkYesod "Pagina" [parseRoutes|
 / HomeR GET
 /login LoginR GET POST
 /erro ErroR GET
-/usuario UsuarioR GET POST
 /admin AdminR GET
 /logout LogoutR GET
 /cadastro CadastraUsuarioR GET POST
@@ -69,7 +68,6 @@ instance Yesod Pagina where
     isAuthorized HomeR _ = return Authorized
     isAuthorized CadastraUsuarioR _ = return Authorized
     isAuthorized ListaFlashcardsR _ = return Authorized
-    isAuthorized UsuarioR _ = return Authorized
     isAuthorized AdminR _ = isAdmin
     isAuthorized (EstudaR _) _ = return Authorized
     isAuthorized FaqR _ = return Authorized
@@ -153,27 +151,10 @@ postCriaFlashCardR = do
                             ((result, _), _) <- runFormPost formFlashCard
                             case result of 
                                 FormSuccess (nome,descricao) -> do 
-                                    runDB $ insert $ FlashCard nome descricao (toSqlKey $ read $ unpack $ uid)
-                                    redirect MeusFlashCardsR
+                                        runDB $ insert $ FlashCard nome descricao (toSqlKey $ read $ unpack $ uid)
+                                        redirect MeusFlashCardsR
 
 
-
-getUsuarioR :: Handler Html
-getUsuarioR = do
-           (widget, enctype) <- generateFormPost formUser
-           defaultLayout [whamlet|
-                 <form method=post enctype=#{enctype} action=@{UsuarioR}>
-                     ^{widget}
-                     <input type="submit" value="Enviar">
-           |]
-
-
-postUsuarioR :: Handler Html
-postUsuarioR = do
-           ((result, _), _) <- runFormPost formUser
-           case result of 
-               FormSuccess user -> (runDB $ insert user) >>= \piid -> redirect (MeusFlashCardsR)
-               _ -> redirect LoginR
 
 --------------------
 
@@ -465,7 +446,6 @@ widgetMenu = do
             <nav id="column_left">
                 <ul class="nav nav-list">
                     <li><a href="@{HomeR}"><i class="fa fa-home fa-fw" aria-hidden="true"></i> Home</a>
-                    <li><a href="@{MeusFlashCardsR}"><i class="fa fa-file-o fa-fw" aria-hidden="true"></i> Meus Flashcards</a>
                     <li><a href="@{ListaFlashcardsR}"> <i class="fa fa-search fa-fw" aria-hidden="true"></i> Procurar Flashcards</a>
                     <li><a href="@{FaqR}"> <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i> FAQ</a>
                     <li><a href="@{LogoutR}"><i class="fa fa-sign-out fa-fw" aria-hidden="true"></i> Logout</a>
