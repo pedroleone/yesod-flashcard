@@ -1,26 +1,9 @@
-1) Webapp + Webservice
-2) App (android) + WebService
-3) Website (usar hamlet, julius, etc)
+#Yesod-Flashcard
+Projeto desenvolvido para a disciplina de Tópicos Especiais em Informática (ITE-002) ministrada por Alexandre Garcia no 1º semestre de 2016.
+Desenvolvido na linguagem Haskell utilizando conceitos de programação funcional.
 
-p/ aula 03/05: 
-Folha a4 contendo
-- Tema
-- Resumo
-- Integrantes
-- Escolha (1, 2 ou 3)
-
-- Mínimo 4 tabelas
-- MER
-- Diagrama "categórico"
-- Repo Git
-  -> mínimo 30 commits
-
-Opções:
-1 e 3: precisa de login
-
-
-
-Tema: Criar um website para cadastrar flashcards para uso em estudo.
+*Tema: Criar um website para cadastrar flashcards para uso em estudo.*
+Utilizar framework Yesod com componentes em Julius (template language para JavaScript), Hamlet (template language para HTML) e Cassius (template language para CSS).
 
 #User Stories
 1. Como usuário visitante eu quero me registrar para criar minha conta 
@@ -30,9 +13,3 @@ Tema: Criar um website para cadastrar flashcards para uso em estudo.
 5. Como usuário registrado eu quero visualizar a lista de flashcards de outros usuários e colocar na minha lista de estudo
 6. Como usuário registrado eu quero visualizar a lista de flashcards que eu criei e que eu coloquei em minha lista para estudo
 
-Intergantes: 
-* Pedro Luiz
-* Marcus Vinicius
-* Gabriel Cesar
-
-Escolha: Item 3 - Website com hamlet, julius e cassius/lucius.
